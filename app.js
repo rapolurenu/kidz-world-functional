@@ -119,34 +119,39 @@ function updatePrice() {
   finalDollars = Math.floor(totalPriceInCents / 100);
   finalCents = totalPriceInCents % 100;
 }
-const baseWhatsappLink = "https://api.whatsapp.com/send?phone=918688678834";
-function sendOrderOnWhatsApp(items, totalAmount) {
-  let message = "Order Details:%0A";
+
+
+var whatsappLink =
+  "https://api.whatsapp.com/send?phone=918688678885&text=Order%20details";
+
+function updateWhatsappLink() {
   for (let index = 0; index < items.length; index++) {
     if (items[index].quantity != 0) {
-      message += `${items[index].name} - ${items[index].quantity}%0A`;
+      whatsappLink += "%0A" + items[index].name + "%20" + items[index].quantity;
     }
   }
-  message += `Total Price: $${totalAmount.toFixed(2)}`;
-
-  const whatsappLink = `${baseWhatsappLink}&text=${encodeURIComponent(
-    message
-  )}`;
-
-  window.open(whatsappLink, "_blank");
+  whatsappLink +=
+    "%0A" + "Total%20Price:%20$" + finalDollars + "%20" + finalCents + "c";
 }
 
 cartButton.onclick = () => {
   updatePrice();
+  updateWhatsappLink();
+  window.open(whatsappLink, "_blank");
 
-  sendOrderOnWhatsApp(items, finalDollars + finalCents / 100);
+
   for (let index = 0; index < items.length; index++) {
     if (items[index].quantity != 0) {
       console.log(
-        `Item name: ${items[index].name} - Quantity: ${items[index].quantity}`
+        "Item name: " +
+          items[index].name +
+          " - Quantity: " +
+          items[index].quantity
       );
     }
   }
 
-  console.log(`The total amount is $${finalDollars}.${finalCents}`);
+  console.log(
+    "The total amount is " + finalDollars + "$ and " + finalCents + " cents"
+  );
 };
