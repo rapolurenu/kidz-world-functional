@@ -1,6 +1,5 @@
 var cartValue = document.getElementById("cart-value");
 var cartButton = document.getElementById("cart");
-
 var addButtons = document.getElementsByClassName("button");
 
 var items = [
@@ -92,7 +91,7 @@ var items = [
 
 function updateCart() {
   let cart = 0;
-  for (index = 0; index < items.length; index++) {
+  for (let index = 0; index < items.length; index++) {
     cart = cart + items[index].quantity;
   }
   cartValue.innerHTML = cart;
@@ -111,47 +110,32 @@ var finalCents = 0;
 function updatePrice() {
   let totalPriceInCents = 0;
 
-  for (index = 0; index < items.length; index++) {
-    totalPriceInCents =
-      totalPriceInCents +
+  for (let index = 0; index < items.length; index++) {
+    totalPriceInCents +=
       items[index].quantity * (items[index].dollars * 100 + items[index].cents);
   }
   finalDollars = Math.floor(totalPriceInCents / 100);
   finalCents = totalPriceInCents % 100;
 }
 
-
-var whatsappLink =
-  "https://api.whatsapp.com/send?phone=918688678885&text=Order%20details";
-
-function updateWhatsappLink() {
+function composeWhatsAppMessage() {
+  let message = "\n";
   for (let index = 0; index < items.length; index++) {
-    if (items[index].quantity != 0) {
-      whatsappLink += "%0A" + items[index].name + "%20" + items[index].quantity;
+    if (items[index].quantity !== 0) {
+      message += items[index].name + ": " + items[index].quantity + "\n";
     }
   }
-  whatsappLink +=
-    "%0A" + "Total%20Price:%20$" + finalDollars + "%20" + finalCents + "c";
+  message += "\nTotal Amount: " + finalDollars + "$ and " + finalCents + " cents";
+  return message;
 }
 
-cartButton.onclick = () => {
-  updatePrice();
-  updateWhatsappLink();
-  window.open(whatsappLink, "_blank");
+function openWhatsApp() {
+  let whatsappMessage = composeWhatsAppMessage();
+  let encodedMessage = encodeURIComponent(whatsappMessage);
+  window.open("https://api.whatsapp.com/send?phone=918688678885&text=Order%20details" + encodedMessage);
+}
 
-
-  for (let index = 0; index < items.length; index++) {
-    if (items[index].quantity != 0) {
-      console.log(
-        "Item name: " +
-          items[index].name +
-          " - Quantity: " +
-          items[index].quantity
-      );
-    }
-  }
-
-  console.log(
-    "The total amount is " + finalDollars + "$ and " + finalCents + " cents"
-  );
-};
+cartButton.addEventListener("click", function() {
+  updatePrice(); // Update the total price
+  openWhatsApp(); // Open WhatsApp with the composed message
+});
