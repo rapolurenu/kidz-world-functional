@@ -107,7 +107,7 @@ for (let i = 0; i < addButtons.length; i++) {
 var finalDollars = 0;
 var finalCents = 0;
 
-function generateOrderMessage() {
+function generateOrderMsg() {
   let message = "\n";
   for (let index = 0; index < items.length; index++) {
     if (items[index].quantity !== 0) {
@@ -130,9 +130,9 @@ function updatePrice() {
 }
 
 function initiateWhatsApp() {
-  let orderMessage = generateOrderMessage();
-  let encodedMessage = encodeURIComponent(orderMessage);
-  window.open("https://api.whatsapp.com/send?phone=918688678885&text=Order%20details" + encodedMessage);
+  let orderMsg = generateOrderMsg();
+  let encodedMsg= encodeURIComponent(orderMsg);
+  window.open("https://api.whatsapp.com/send?phone=918688678885&text=Order%20details" + encodedMsg);
 }
 
 cartButton.addEventListener("click", function() {
