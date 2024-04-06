@@ -107,6 +107,17 @@ for (let i = 0; i < addButtons.length; i++) {
 var finalDollars = 0;
 var finalCents = 0;
 
+function generateOrderMessage() {
+  let message = "\n";
+  for (let index = 0; index < items.length; index++) {
+    if (items[index].quantity !== 0) {
+      message += items[index].name + ": " + items[index].quantity + "\n";
+    }
+  }
+  message += "\nTotal Amount: " + finalDollars + "$ and " + finalCents + " cents";
+  return message;
+}
+
 function updatePrice() {
   let totalPriceInCents = 0;
 
@@ -118,22 +129,18 @@ function updatePrice() {
   finalCents = totalPriceInCents % 100;
 }
 
-function composeWhatsAppMessage() {
-  let message = "\n";
-  for (let index = 0; index < items.length; index++) {
-    if (items[index].quantity !== 0) {
-      message += items[index].name + ": " + items[index].quantity + "\n";
-    }
-  }
-  message += "\nTotal Amount: " + finalDollars + "$ and " + finalCents + " cents";
-  return message;
-}
-
-function openWhatsApp() {
-  let whatsappMessage = composeWhatsAppMessage();
-  let encodedMessage = encodeURIComponent(whatsappMessage);
+function initiateWhatsApp() {
+  let orderMessage = generateOrderMessage();
+  let encodedMessage = encodeURIComponent(orderMessage);
   window.open("https://api.whatsapp.com/send?phone=918688678885&text=Order%20details" + encodedMessage);
 }
+
+cartButton.addEventListener("click", function() {
+  updatePrice(); 
+  initiateWhatsApp(); 
+});
+
+
 
 cartButton.addEventListener("click", function() {
   updatePrice(); // Update the total price
