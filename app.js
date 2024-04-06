@@ -139,10 +139,3 @@ cartButton.addEventListener("click", function() {
   updatePrice(); 
   initiateWhatsApp(); 
 });
-
-
-
-cartButton.addEventListener("click", function() {
-  updatePrice(); // Update the total price
-  openWhatsApp(); // Open WhatsApp with the composed message
-});
